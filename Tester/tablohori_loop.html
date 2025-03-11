@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)file:///C:/Users/fr0st/Downloads/Telegram%20Desktop/tablohori.html -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 4.5fr 1.0fr 1.5fr;
+            grid-template-rows: 16vh;
+            grid-auto-rows: 16vh;
+            text-align: center;
+            vertical-align: middle;
+            color: #FF6600;
+        }
+		.containerV {
+            display: grid;
+            grid-template-columns: 7fr auto 6.5fr;
+            vertical-align: middle;
+            color: #FF6600;
+        }
+
+	@keyframes blink {
+	  50% {
+	    opacity: 0.0;
+	  }
+	}
+
+        .item {
+            font-size: 8vw;
+            color: #1286B1;
+	    animation: blink 0s infinite;
+	    /*animation: blink 0s step-start 0s infinite;*/
+        }
+
+        .items {
+            font-size: 4vw;
+            color: #1266B1;
+            vertical-align: bottom;
+        }
+
+        .itemn {
+            font-size: 8vw;
+            vertical-align: middle;
+	        color: #1266B1;
+	    animation: blink 0s infinite;
+        }
+
+        .itemt {
+            border: 1px solid #1266B1;
+        }
+
+        .header_tab {
+            border: 1px solid #1286B1;
+            grid-template-rows: 15vh;
+        }
+		
+        .header {
+            font-size: 4vw;
+			color: #FFFFFF;
+            grid-template-rows: 12vh;
+			
+	    }
+		
+		.background-video {
+		  max-width: 960;
+		}
+
+		body {
+            background-color: #1266B1;
+        }
+    </style>
+    <title>Табло
+    </title>
+</head>
+
+<body>
+	<div style="font-family: Arial;" class="containerV">
+		<div style="font-family: Arial;" class="container">
+			<div class="header">Клиент</div>
+			<div class="header"></div>
+			<div class="header">окно</div>
+							
+			<div class="itemn item_01">----</div>
+			<div class="items item_01_1"></div>
+			<div class="item item_01_2">--</div>
+			
+			<div class="itemn item_02">----</div>
+			<div class="items item_02_1"></div>
+			<div class="item item_02_2">--</div>
+					
+					
+		</div>
+		<div class="header_tab"></div>
+
+		<div class="background-video">
+			<video id="myVideo" width="960" autoplay muted onended="run();">   
+				<source id="ss"  src="static/videos/1.mp4" type='video/mp4'>
+			</video>
+
+    			<script>
+				video_count = 1;
+        			videoPlayer = document.getElementById("ss");        
+        			video=document.getElementById("myVideo");
+
+        			function run(){
+            			video_count++;
+            			if (video_count == 4) video_count = 1;
+            			videoPlayer.setAttribute("src","static/videos/"+video_count+".mp4");       
+            			video.load();
+            			video.play();
+       				}
+
+    			</script>
+		</div>
+		<div style="font-family: Arial;" class="container">
+					
+			<div class="itemn item_03">----</div>
+			<div class="items item_03_1"></div>
+			<div class="item item_03_2">--</div>
+					
+			<div class="itemn item_04">----</div>
+			<div class="items item_04_1"></div>
+			<div class="item item_04_2">--</div>
+					
+			<div class="itemn item_05">----</div>
+			<div class="items item_05_1"></div>
+			<div class="item item_05_2">--</div>
+					
+		</div>
+		<div class="header_tab"></div>
+		<div class="background-video">
+			<img src="static/QR.jpg" alt="QR-коды для скачивания." width="960">
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        const { host } = window.location;
+
+        //audio setup
+        var queueAudio = [];
+        var audioPlay = false;
+
+
+        function audioQueuePlay() {
+
+            if (!queueAudio.length > 0) {
+                return
+            }
+
+
+            if (audioPlay == true) {
+                return
+            }
+
+            audioPlay = queueAudio.length > 0;
+
+            if (audioPlay) {
+                playNextSounds();
+            }
+
+
+            /*
+                var stop = queueAudio.length > 0;
+    
+                while (stop) {
+                    var z = queueAudio.shift();
+                    //play(z);
+                    var playPromise = z.play();
+                    sleep(2)
+                    console.log(queueAudio.length);
+                    stop = queueAudio.length > 0;
+                }
+                
+                */
+
+        }
+
+        const playNextSounds = () => {
+
+            if (queueAudio.length > 0) {
+                const audio = new Audio();
+
+                audio.src = queueAudio[0].src;
+                audio.currentTime = 0;
+                audio.play();
+                queueAudio.shift();
+                audio.addEventListener('ended', function () {
+
+                    sleep(500)
+                    return playNextSounds();
+                })
+            } else {
+                audioPlay = false;
+            }
+
+        }
+
+        const numTablo = [1, 2, 3, 4, 5]
+
+        function getData() {
+            // URL на который будем отправлять GET запрос
+            var xhr = new XMLHttpRequest();
+            //xhr.responseType = 'json';
+            xhr.open('GET', '/api', false);
+            try {
+                xhr.send();
+            } catch (err) {
+                return
+            }
+
+            if (xhr.status != 200) {
+                // обработать ошибку
+                console.log('Ошибка ' + xhr.status + ': ' + xhr.statusText);
+            } else {
+                // вывести результат
+                var tabloinfo = JSON.parse(xhr.responseText);
+
+                for (num of numTablo) {
+
+			let tablo = tabloinfo[num - 1];
+		    	if (typeof tablo != "undefined") {
+	                    var itemNum = document.querySelector('.item_' + tablo['id']);
+        	            var itemPR = document.querySelector('.item_' + tablo['id'] + '_1');
+                	    var itemID = document.querySelector('.item_' + tablo['id'] + '_2');
+
+				if (tablo['id'] != itemID.textContent) {
+					//itemID.setAttribute('style', 'color: #EFE300');
+					itemID.textContent = tablo['id'];				
+				}
+				if (tablo['num_tab'] == '----' || tablo['num_tab'] == '') {
+
+					itemNum.textContent = '----';
+					itemPR.textContent = '';
+					itemID.textContent = tablo['id'];
+
+					itemID.setAttribute('style', 'color: #1286B1; animation: blink 0s infinite');
+					itemNum.setAttribute('style', 'color: #1266B1; animation: blink 0s infinite');
+					itemPR.setAttribute('style', 'color: #1266B1');
+
+				} else {
+
+					if (tablo['num_tab'] != itemNum.textContent) {
+						if (tablo['n'] == true) {
+							queueAudio.push(
+								new Audio("http://" + host + "/static/audio/" + tablo['voice_text'])
+								);
+							itemID.setAttribute('style', 'color: #EFE300; animation: blink 1s infinite;');
+							itemNum.textContent = tablo['num_tab'];		
+							itemNum.setAttribute('style', 'color: #EFE300; animation: blink 1s infinite');
+							itemPR.setAttribute('style', 'color: #EFE300');
+						}
+			   	 	}
+					itemPR.textContent = tablo['pre_registration'];
+					if (tablo['n'] == false) {
+						itemID.setAttribute('style', 'color: #FFFFFF; animation: blink 0s infinite;');
+						itemNum.textContent = tablo['num_tab'];
+						itemNum.setAttribute('style', 'color: #FFFFFF; animation: blink 0s infinite');
+						itemPR.setAttribute('style', 'color: #FFFFFF');
+					}
+				}
+	                    	setTimeout(audioQueuePlay, 100 * 10);
+			}
+                }
+            }
+        }
+        setInterval(getData, 100 * 20);
+
+        function sleep(ms) {
+            var now = new Date().getTime();
+            while (new Date().getTime() < now + ms) {
+                /* Do nothing */
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
