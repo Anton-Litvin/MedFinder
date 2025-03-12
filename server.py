@@ -1,57 +1,53 @@
-import requests
-from bs4 import BeautifulSoup
-import json
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+import os
+import time
 
+# Указываем путь к chromedriver
+chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
 
-def search_apteka_ru(drug_name):
-    # URL для поиска на сайте apteka.ru
-    url = f"https://apteka.ru/search/?q={drug_name}"
+# Создаем объект Service
+service = Service(executable_path=chromedriver_path)
 
-    # Заголовки для имитации запроса от браузера
-    st_accept = "text/html"  # говорим веб-серверу,
-    # что хотим получить html
-    # имитируем подключение через браузер Mozilla на macOS
-    st_useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_3_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15"
-    # формируем хеш заголовков
-    headers = {
-        "Accept": st_accept,
-        "User-Agent": st_useragent
-    }
+# Инициализация драйвера с использованием Service
+driver = webdriver.Chrome(service=service)
 
-    # Отправка GET-запроса
-    response = requests.get(url, headers=headers)
+try:
+    # 1. Переход на страницу
+    driver.get("https://apteka.ru")
 
-    # Проверка статуса ответа
-    if response.status_code != 200:
-        return json.dumps({"error": "Не удалось получить данные с сайта"})
+    # 2. Устанавливаем cookie или локальное хранилище для выбранного города
+    # Пример для cookies (замените на актуальные данные для вашего сайта)
+    driver.add_cookie({
+        "name": "city_id",  # Имя cookie, которое хранит ID города
+        "value": "Moscow",       # Значение (ID города, например, 1 для Москвы)
+        "domain": "apteka.ru"
+    })
 
-    # Парсинг HTML-страницы
-    soup = BeautifulSoup(response.text, 'html.parser')
+    # 3. Переход на страницу поиска
+    driver.get("https://apteka.ru/search/?q=аспирин")
 
-    # Поиск элементов с информацией о препарате
-    # (этот код зависит от структуры сайта и может потребовать корректировки)
-    items = soup.find_all('div', class_='product-item')
-    results = []
+    # 4. Ожидание 10 секунд (дополнительное время для загрузки страницы)
+    time.sleep(10)
 
-    for item in items:
-        name = item.find('div', class_='product-title').text.strip()
-        price = item.find('div', class_='product-price').text.strip()
-        active_substance = item.find('div', class_='product-substance').text.strip() if item.find('div',
-                                                                                                  class_='product-substance') else "Не указано"
-        image_url = item.find('img')['src'] if item.find('img') else "Нет изображения"
+    # 5. Извлечение текста из всех доступных блоков
+    product_names = driver.find_elements(By.CLASS_NAME, "catalog-car__name")
+    product_prices = driver.find_elements(By.CLASS_NAME, "moneyprice__roubles")
+    product_images = driver.find_elements(By.XPATH, "//img[contains(@src, '.png')]")
 
-        results.append({
-            "Имя": name,
-            "Цена": price,
-            "Действующее вещество": active_substance,
-            "Ссылка на фото": image_url
-        })
+    # 6. Вывод результата в терминал
+    for name in product_names:
+        print("Название товара:", name.text)
 
-    # Возврат результатов в формате JSON
-    return json.dumps(results, ensure_ascii=False, indent=4)
+    for price in product_prices:
+        print("Цена товара:", price.text)
 
+    for image in product_images:
+        print("Ссылка на изображение:", image.get_attribute("src"))
 
-# Пример использования
-drug_name = ("аспирин")
-result = search_apteka_ru(drug_name)
-print(result)
+finally:
+    # Закрытие драйвера
+    driver.quit()
