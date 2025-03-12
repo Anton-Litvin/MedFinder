@@ -34,8 +34,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/ваш-username/ваш-репозиторий.git
-cd ваш-репозиторий
+git clone https://github.com/Anton-Litvin/MedFinder.git
+cd MedFinder
 ```
 ### 2. Установка зависимостей
 ```bash
