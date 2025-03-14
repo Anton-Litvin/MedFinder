@@ -18,7 +18,7 @@ service = Service(executable_path=chromedriver_path)
 driver = webdriver.Chrome(service=service)
 
 # get source code
-driver.get("https://apteka.ru/search/?q=аспирин")
+driver.get("https://stolichki.ru/search?name=аспирин")
 time.sleep(2)
 html = driver.page_source
 body = driver.find_element(By.TAG_NAME, "body")  # Находим элемент body
