@@ -30,7 +30,7 @@ def scrape_apteka_ru(search_query):
 
         # 2. Ожидание появления окна выбора города и его закрытие
         try:
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "TownSelector"))
             )
             body = driver.find_element(By.TAG_NAME, "body")
@@ -64,8 +64,3 @@ def scrape_apteka_ru(search_query):
         # Закрытие драйвера
         driver.quit()
 
-
-# Пример использования
-search_query = "аспирин"
-result = scrape_apteka_ru(search_query)
-print(result)
