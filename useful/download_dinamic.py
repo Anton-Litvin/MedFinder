@@ -23,7 +23,7 @@ time.sleep(2)
 html = driver.page_source
 body = driver.find_element(By.TAG_NAME, "body")  # Находим элемент body
 body.send_keys(Keys.ESCAPE)  # Отправляем клавишу "Esc"
-f = open("index.html","w")
+f = open("index.html", "w")
 f.write(html)
 
 # close web browser
