@@ -1,9 +1,6 @@
 import streamlit as st
 
-st.set_page_config(
-    page_icon="👋",
-)
-
+st.set_page_config(page_icon="👋",layout="centered")
 st.title("Добро пожаловать на MedFinder!👋")
 
 st.markdown(

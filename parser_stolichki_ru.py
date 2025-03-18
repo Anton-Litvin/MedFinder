@@ -49,14 +49,10 @@ def scrape_stolichki_ru(search_query):
             products.append(product)
 
         # 6. Преобразование в JSON
-        return json.dumps(products, ensure_ascii=False, indent=4)
+        return products
 
     finally:
         # Закрытие драйвера
         driver.quit()
 
 
-# Пример использования
-search_query = "аспирин"
-result = scrape_stolichki_ru(search_query)
-print(result)

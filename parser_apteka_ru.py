@@ -58,8 +58,7 @@ def scrape_apteka_ru(search_query):
             products.append(product)
 
         # 6. Преобразование в JSON
-        result = json.dumps(products)
-        return result
+        return products
     finally:
         # Закрытие драйвера
         driver.quit()
