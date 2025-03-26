@@ -12,14 +12,14 @@ if st.button("Поиск"):
     with col1:
         st.header(f"{phram_searh} в Apteka.ru")
         for i in range (len(pharms_data["apteka_ru_data"])):
-            tile = col1.container(height=400,)
-            tile.write(pharms_data["apteka_ru_data"][i]["name"])
+            tile = col1.container(height=400)
+            tile.write(f'[{pharms_data["apteka_ru_data"][i]["name"]}]({pharms_data["apteka_ru_data"][i]["url"]})')
             tile.image(pharms_data["apteka_ru_data"][i]["image_url"])
             tile.write(pharms_data["apteka_ru_data"][i]["price"]+' рублей')
     with col2:
         st.header(f"{phram_searh} в Stolichki.ru")
-        for j in range (len(pharms_data["stolichki_ru_data"])):
+        for j in range (0,len(pharms_data["stolichki_ru_data"]),2):
             tile = col2.container(height=400)
-            tile.write(pharms_data["stolichki_ru_data"][j]["name"])
-            tile.image(pharms_data["stolichki_ru_data"][j]["image_url"])
-            tile.write(pharms_data["stolichki_ru_data"][j]["price"]+' рублей')
+            tile.write(f'[{pharms_data["stolichki_ru_data"][j]["name"]}]({pharms_data["stolichki_ru_data"][j]["url"]})')
+            tile.image(pharms_data["stolichki_ru_data"][j//2]["image_url"])
+            tile.write(pharms_data["stolichki_ru_data"][j//2]["price"]+' рублей')

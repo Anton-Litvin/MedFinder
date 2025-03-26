@@ -15,20 +15,16 @@ def scrape_apteka_ru(search_query):
     :param search_query: Поисковый запрос (например, "аспирин")
     :return: Данные в формате JSON
     """
-    # Указываем путь к chromedriver
     chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
 
-    # Создаем объект Service
     service = Service(executable_path=chromedriver_path)
 
-    # Инициализация драйвера с использованием Service
     driver = webdriver.Chrome(service=service)
 
     try:
-        # 1. Переход на страницу
         driver.get(f"https://apteka.ru/search/?q={search_query}")
 
-        # 2. Ожидание появления окна выбора города и его закрытие
+        # Ожидание появления окна выбора города и его закрытие
         try:
             WebDriverWait(driver, 5).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "TownSelector"))
@@ -39,21 +35,21 @@ def scrape_apteka_ru(search_query):
         except Exception as e:
             print("Окно выбора города не найдено или не удалось закрыть:", e)
 
-        # 3. Ожидание 10 секунд (дополнительное время для загрузки страницы)
         time.sleep(10)
 
-        # 4. Извлечение текста из всех доступных блоков
         product_names = driver.find_elements(By.CLASS_NAME, "catalog-card__name")
         product_prices = driver.find_elements(By.CLASS_NAME, "moneyprice__roubles")
         product_images = driver.find_elements(By.CSS_SELECTOR, ".CardPhotos img")
+        product_url = driver.find_elements(By.CLASS_NAME, "catalog-card__link")
 
         # 5. Формирование данных в виде списка словарей
         products = []
-        for name, price, image in zip(product_names, product_prices, product_images):
+        for name, price, image,url in zip(product_names, product_prices, product_images,product_url):
             product = {
                 "name": name.text,
                 "price": price.text,
-                "image_url": image.get_attribute("src")
+                "image_url": image.get_attribute("src"),
+                "url": url.get_attribute("href")
             }
             products.append(product)
 
