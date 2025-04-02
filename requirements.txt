@@ -1,4 +1,4 @@
 streamlit
 selenium
-fastapi
+fastapi[standart]
 requests

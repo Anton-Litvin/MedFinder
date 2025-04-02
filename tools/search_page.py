@@ -1,8 +1,25 @@
 import streamlit as st
 import requests
 import json
+st.set_page_config(layout="wide")
 st.title("Поиск")
+
 phram_searh = st.text_input("Введите имя препарата, которое хотите найти")
 if st.button("Поиск"):
     pharms = requests.post("http://127.0.0.1:8000/pars", params={"pharm_name": phram_searh})
-    st.json(json.loads(pharms.text))
+    pharms_data = pharms.json()
+    col1,col2 ,col3 =st.columns(3)
+    with col1:
+        st.header(f"{phram_searh} в Apteka.ru")
+        for i in range (len(pharms_data["apteka_ru_data"])):
+            tile = col1.container(height=400)
+            tile.write(f'[{pharms_data["apteka_ru_data"][i]["name"]}]({pharms_data["apteka_ru_data"][i]["url"]})')
+            tile.image(pharms_data["apteka_ru_data"][i]["image_url"])
+            tile.write(pharms_data["apteka_ru_data"][i]["price"]+' рублей')
+    with col2:
+        st.header(f"{phram_searh} в Stolichki.ru")
+        for j in range (0,len(pharms_data["stolichki_ru_data"]),2):
+            tile = col2.container(height=400)
+            tile.write(f'[{pharms_data["stolichki_ru_data"][j]["name"]}]({pharms_data["stolichki_ru_data"][j]["url"]})')
+            tile.image(pharms_data["stolichki_ru_data"][j//2]["image_url"])
+            tile.write(pharms_data["stolichki_ru_data"][j//2]["price"]+' рублей')
