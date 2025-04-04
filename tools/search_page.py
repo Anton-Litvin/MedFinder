@@ -23,3 +23,10 @@ if st.button("Поиск"):
             tile.write(f'[{pharms_data["stolichki_ru_data"][j]["name"]}]({pharms_data["stolichki_ru_data"][j]["url"]})')
             tile.image(pharms_data["stolichki_ru_data"][j//2]["image_url"])
             tile.write(pharms_data["stolichki_ru_data"][j//2]["price"]+' рублей')
+    with col3:
+        st.header(f"{phram_searh} в Rigla.ru")
+        for k in range (len(pharms_data["rigla_ru_data"])):
+            tile = col3.container(height=400)
+            tile.write(f'[{pharms_data["rigla_ru_data"][k]["name"]}]({pharms_data["rigla_ru_data"][k]["url"]})')
+            tile.image(pharms_data["rigla_ru_data"][k]["image_url"])
+            tile.write(pharms_data["rigla_ru_data"][k]["price"]+' рублей')

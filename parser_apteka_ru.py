@@ -24,16 +24,9 @@ def scrape_apteka_ru(search_query):
     try:
         driver.get(f"https://apteka.ru/search/?q={search_query}")
 
-        # Ожидание появления окна выбора города и его закрытие
-        try:
-            WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "TownSelector"))
-            )
-            body = driver.find_element(By.TAG_NAME, "body")
-            body.send_keys(Keys.ESCAPE)
-            print("Окно выбора города закрыто с помощью клавиши 'Esc'.")
-        except Exception as e:
-            print("Окно выбора города не найдено или не удалось закрыть:", e)
+        time.sleep(2)
+        body = driver.find_element(By.TAG_NAME, "body")
+        body.send_keys(Keys.ESCAPE)
 
         time.sleep(10)
 

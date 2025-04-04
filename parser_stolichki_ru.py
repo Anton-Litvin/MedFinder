@@ -48,5 +48,3 @@ def scrape_stolichki_ru(search_query):
 
     finally:
         driver.quit()
-
-
