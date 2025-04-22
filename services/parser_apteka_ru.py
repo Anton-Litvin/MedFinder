@@ -15,7 +15,7 @@ def scrape_apteka_ru(search_query):
     :param search_query: Поисковый запрос (например, "аспирин")
     :return: Данные в формате JSON
     """
-    chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
+    chromedriver_path = os.path.join(os.getcwd(),"services", "chromedriver")
 
     service = Service(executable_path=chromedriver_path)
 
@@ -52,3 +52,4 @@ def scrape_apteka_ru(search_query):
         # Закрытие драйвера
         driver.quit()
 
+#print(scrape_apteka_ru("аспирин"))

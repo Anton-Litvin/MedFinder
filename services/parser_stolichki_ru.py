@@ -15,7 +15,7 @@ def scrape_stolichki_ru(search_query):
     :param search_query: Поисковый запрос (например, "аспирин")
     :return: Данные в формате JSON
     """
-    chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
+    chromedriver_path = os.path.join(os.getcwd(),"services", "chromedriver")
 
     service = Service(executable_path=chromedriver_path)
 

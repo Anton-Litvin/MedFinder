@@ -2,3 +2,5 @@ streamlit
 selenium
 fastapi[standart]
 requests
+psycopg
+

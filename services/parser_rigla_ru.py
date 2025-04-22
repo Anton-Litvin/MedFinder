@@ -16,7 +16,7 @@ def scrape_rigla_ru(search_query):
     :return: Данные в формате JSON
     """
     # Указываем путь к chromedriver
-    chromedriver_path = os.path.join(os.getcwd(), "chromedriver")
+    chromedriver_path = os.path.join(os.getcwd(),"services", "chromedriver")
 
     # Создаем объект Service
     service = Service(executable_path=chromedriver_path)
