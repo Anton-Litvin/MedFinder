@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from services.parser_stolichki_ru import scrape_stolichki_ru
 from services.parser_rigla_ru import  scrape_rigla_ru
 app = FastAPI()
-cache_manager = CacheManager()
+cache_manager = CacheManager(ttl_seconds=3600)
 FUNCTIONS = {
     "apteka_ru_data": scrape_apteka_ru,
     "stolichki_ru_data": scrape_stolichki_ru,
