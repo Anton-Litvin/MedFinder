@@ -1,6 +1,7 @@
 import streamlit as st
 
 # Заголовок страницы
+st.set_page_config(page_icon="",layout="centered")
 st.title("Вход в аккаунт")
 # Функция для проверки логина и пароля
 def authenticate(username, password):
