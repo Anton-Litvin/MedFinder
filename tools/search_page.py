@@ -11,7 +11,6 @@ if st.button("Поиск"):
     col1,col2 ,col3 =st.columns(3)
     with col1:
         st.header(f"{phram_searh} в Apteka.ru")
-        print(pharms_data["apteka_ru_data"])
         for i in range (len(pharms_data["apteka_ru_data"])):
             tile = col1.container(height=400)
             tile.write(f'[{pharms_data["apteka_ru_data"][i]["name"]}]({pharms_data["apteka_ru_data"][i]["url"]})')
