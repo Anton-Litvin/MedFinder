@@ -4,6 +4,13 @@ import json
 st.set_page_config(layout="wide")
 st.title("Поиск")
 
+if st.sidebar.button("Main"):
+    st.switch_page("tools/main_page.py")
+if st.sidebar.button("Search"):
+    st.switch_page("tools/search_page.py")
+if st.sidebar.button("Exit"):
+    st.switch_page("tools/login_page.py")
+
 phram_searh = st.text_input("Введите имя препарата, которое хотите найти")
 if st.button("Поиск"):
     pharms = requests.post("http://127.0.0.1:8000/pars", params={"pharm_name": phram_searh})
