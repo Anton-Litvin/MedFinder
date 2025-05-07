@@ -1,30 +1,25 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
-import os
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 import time
-import json
+from selenium.webdriver.common.keys import Keys
+
 
 def scrape_apteka_ru(search_query):
-    """
-    Парсит данные с сайта Apteka.ru по заданному запросу.
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
 
-    :param search_query: Поисковый запрос (например, "аспирин")
-    :return: Данные в формате JSON
-    """
-    chromedriver_path = os.path.join(os.getcwd(),"services", "chromedriver")
-
-    service = Service(executable_path=chromedriver_path)
-
-    driver = webdriver.Chrome(service=service)
+    # Используем webdriver-manager, он сам скачает нужный chromedriver
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
         driver.get(f"https://apteka.ru/search/?q={search_query}")
 
-        time.sleep(2)
+        time.sleep(5)
         body = driver.find_element(By.TAG_NAME, "body")
         body.send_keys(Keys.ESCAPE)
 
@@ -51,5 +46,3 @@ def scrape_apteka_ru(search_query):
     finally:
         # Закрытие драйвера
         driver.quit()
-
-#print(scrape_apteka_ru("аспирин"))
