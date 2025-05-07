@@ -69,11 +69,12 @@ if st.session_state.page == "reg":
     submit = reg.form_submit_button(f'Подтвердить')
     auth = reg.form_submit_button("Авторизация", on_click=go_to_auth)
 
-    proc = RegAuth(login, password)
-    if proc.authenticate_user():
-        st.success("Пользователь успешно зарегистрирован")
-    else:
-        st.error("Ошибка: пользователь с таким логином уже существует")
+    if login != '' and password != '':
+        proc = RegAuth(login, password)
+        if proc.register_user() and submit:
+            st.success("Пользователь успешно зарегистрирован")
+        elif not(proc.register_user()) and submit:
+            st.error("Ошибка: пользователь с таким логином уже существует")
     
 
 elif st.session_state.page == "auth":
@@ -86,9 +87,9 @@ elif st.session_state.page == "auth":
     submit = auth.form_submit_button(f'Подтвердить')
     reg = auth.form_submit_button("Регистрация", on_click=go_to_reg)
 
-    proc = RegAuth(login, password)
-    if proc.register_user():
-        st.switch_page("tools/main_page.py")
-        st.success("Успешная авторизация")
-    else:
-        st.error("Ошибка аутентификации: неверный логин или пароль")
+    if login != '' and password != '':
+        proc = RegAuth(login, password)
+        if proc.authenticate_user() and submit:
+            st.switch_page("tools/main_page.py")
+        elif not(proc.authenticate_user()) and submit:
+            st.error("Ошибка аутентификации: неверный логин или пароль")
