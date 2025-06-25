@@ -11,7 +11,7 @@ class RegAuth():
         # Хешируем пароль
         password_hash = sha256(self.password.encode()).hexdigest()
         
-        conn = sql.connect('tools/auth.db')
+        conn = sql.connect('./MedFinder/tools/auth.db')
         cursor = conn.cursor()
         
         try:
@@ -31,7 +31,7 @@ class RegAuth():
         # Хешируем введенный пароль для сравнения
         password_hash = sha256(self.password.encode()).hexdigest()
         
-        conn = sql.connect('tools/auth.db')
+        conn = sql.connect('./MedFinder/tools/auth.db')
         cursor = conn.cursor()
         
         cursor.execute('''

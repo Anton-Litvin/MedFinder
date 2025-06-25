@@ -3,7 +3,7 @@ import sqlite3 as sql
 
 def create_database():
     # Подключаемся к базе данных (или создаем новую)
-    conn = sql.connect('tools/auth.db')
+    conn = sql.connect('./MedFinder/tools/auth.db')
     cursor = conn.cursor()
     
     # Создаем таблицу пользователей
