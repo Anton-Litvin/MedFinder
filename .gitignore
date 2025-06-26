@@ -3,3 +3,6 @@
 /.idea/
 /__pycache__/
 cache.db
+auth.db
+/tools/auth.db
+/tools/__pycache__/
